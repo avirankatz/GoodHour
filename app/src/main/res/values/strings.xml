@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">שעה טובה</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="sunday">א</string>
+    <string name="monday">ב</string>
+    <string name="tuesday">ג</string>
+    <string name="wednesday">ד</string>
+    <string name="thursday">ה</string>
+    <string name="friday">ו</string>
+    <string name="saturday">ש</string>
+
+    <string name="title_activity_good_hour">שעה טובה</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
