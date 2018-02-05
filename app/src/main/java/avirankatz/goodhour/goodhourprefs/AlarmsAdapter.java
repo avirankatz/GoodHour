@@ -126,6 +126,9 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
         );
         if (goodHour.isActivated) {
             Calendar calendar = goodHour.time;
+            while (calendar.before(Calendar.getInstance()))
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+            calendar.set(Calendar.SECOND,0);
             if (!goodHour.isRepeating())
                 manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             else
@@ -186,8 +189,8 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
                         calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
                         calendar.set(Calendar.MINUTE, selectedMinute);
                         calendar.set(Calendar.SECOND, 0);
-                        if (calendar.before(Calendar.getInstance()))
-                            calendar.add(Calendar.DAY_OF_YEAR, 1);
+//                        if (calendar.before(Calendar.getInstance()))
+//                            calendar.add(Calendar.DAY_OF_YEAR, 1);
                         goodHour.time = calendar;
                         setAlarm(goodHour, view.getRootView());
                         notifyDataSetChanged();

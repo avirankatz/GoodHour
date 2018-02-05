@@ -23,7 +23,7 @@ public class GoodHour implements Serializable {
         return new SimpleDateFormat("HH:mm").format(time.getTime());
     }
 
-    boolean isRepeating() {
+    public boolean isRepeating() {
         for (boolean day : days) {
             if (day) return true;
         }

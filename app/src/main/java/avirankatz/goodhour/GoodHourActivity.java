@@ -120,12 +120,6 @@ public class GoodHourActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                finish();
-//            }
-//        }, 1000 * 60 * 60);
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -140,9 +134,11 @@ public class GoodHourActivity extends AppCompatActivity {
                 new Intent().setAction("finish.goodhour.activity"),
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
-        manager.set(AlarmManager.RTC_WAKEUP,
-                Calendar.getInstance().getTimeInMillis() + 1000 * 60 * 60,
-                pendingIntent);
+        if (manager != null) {
+            manager.set(AlarmManager.RTC_WAKEUP,
+                    Calendar.getInstance().getTimeInMillis() + 1000 * 60 * 60,
+                    pendingIntent);
+        }
     }
 
     @Override
@@ -169,8 +165,12 @@ public class GoodHourActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE))
-                .setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        try {
+            ((AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE))
+                    .setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void toggle() {
