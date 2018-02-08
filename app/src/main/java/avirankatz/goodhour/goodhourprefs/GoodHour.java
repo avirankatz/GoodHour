@@ -15,6 +15,7 @@ public class GoodHour implements Serializable {
     public GoodHour() {
         this.id = hashCode();
         time = Calendar.getInstance();
+        time.setFirstDayOfWeek(Calendar.SUNDAY);
         days = new boolean[7];
     }
 

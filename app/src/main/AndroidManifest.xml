@@ -39,5 +39,6 @@
                 android:value="avirankatz.goodhour.goodhourprefs.MainActivity" />
         </activity>
     </application>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 </manifest>

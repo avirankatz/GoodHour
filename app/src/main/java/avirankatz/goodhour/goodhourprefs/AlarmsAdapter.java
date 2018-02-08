@@ -148,25 +148,27 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
         }
     }
 
-    private void setAlarmsForWeekdays(GoodHour goodHour, boolean isActivated) {
+    private void setAlarmsForWeekdays(GoodHour goodHour, boolean isGoodHourActivated) {
         AlarmManager manager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         for (int i = 0; i < goodHour.days.length; i++) {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     getContext(),
                     goodHour.id + i + 1,
-                    new Intent(getContext(), AlarmReceiver.class),
+                    new Intent(getContext(), AlarmReceiver.class)
+                            .putExtra("alarmId", goodHour.id + i + 1),
                     PendingIntent.FLAG_UPDATE_CURRENT
             );
-            boolean day = goodHour.days[i];
-            if (day && isActivated) {
-                goodHour.time.set(Calendar.DAY_OF_WEEK, i + 1);
-                long alarmTime = goodHour.time.getTimeInMillis();
-                if (goodHour.time.before(Calendar.getInstance()))
-                    alarmTime += 1000 * 60 * 60 * 24 * 7;
-                manager.setRepeating(
+            if (goodHour.days[i] && isGoodHourActivated) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.HOUR_OF_DAY, goodHour.time.get(Calendar.HOUR_OF_DAY));
+                calendar.set(Calendar.MINUTE, goodHour.time.get(Calendar.MINUTE));
+                calendar.set(Calendar.DAY_OF_WEEK, i + 1);
+                while (calendar.before(Calendar.getInstance()))
+                    calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                manager.set(
                         AlarmManager.RTC_WAKEUP,
-                        alarmTime,
-                        1000 * 60 * 60 * 24 * 7,
+                        calendar.getTimeInMillis(),
                         pendingIntent);
             } else
                 manager.cancel(pendingIntent);
