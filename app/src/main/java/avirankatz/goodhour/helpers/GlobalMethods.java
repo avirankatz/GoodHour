@@ -19,6 +19,8 @@ import avirankatz.goodhour.goodhourprefs.GoodHour;
 
 public class GlobalMethods {
     private static final String ALARMS_FILENAME = "alarms";
+    public static final boolean DEBUG = false;
+
 
     public static boolean saveGoodHoursToFile(Context context, List<GoodHour> goodHours) {
         try {

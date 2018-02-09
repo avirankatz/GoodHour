@@ -84,7 +84,8 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
                     if (!compoundButton.isPressed()) return;
                     goodHour.days[finalI] = b;
                     GlobalMethods.saveGoodHoursToFile(getContext(), hours);
-                    setAlarm(goodHour, null);
+//                    setAlarm(goodHour, null);
+                    goodHour.scheduleAlarms(getContext());
                 }
             });
         }
@@ -95,7 +96,8 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
             @Override
             public void onClick(View view) {
                 goodHour.isActivated = false;
-                setAlarm(goodHour, null);
+//                setAlarm(goodHour, null);
+                goodHour.scheduleAlarms(getContext());
                 remove(goodHour);
                 notifyDataSetChanged();
                 GlobalMethods.saveGoodHoursToFile(getContext(), hours);
@@ -110,7 +112,9 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isActivated) {
                 if (!compoundButton.isPressed()) return;
                 goodHour.isActivated = isActivated;
-                setAlarm(goodHour, aSwitch.getRootView());
+//                setAlarm(goodHour, aSwitch.getRootView());
+                goodHour.scheduleAlarms(getContext());
+                if (goodHour.isActivated) showSnackbar(aSwitch.getRootView(), goodHour.toString());
                 GlobalMethods.saveGoodHoursToFile(getContext(), hours);
             }
         });
@@ -194,7 +198,9 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
 //                        if (calendar.before(Calendar.getInstance()))
 //                            calendar.add(Calendar.DAY_OF_YEAR, 1);
                         goodHour.time = calendar;
-                        setAlarm(goodHour, view.getRootView());
+//                        setAlarm(goodHour, view.getRootView());
+                        goodHour.scheduleAlarms(getContext());
+                        if (goodHour.isActivated) showSnackbar(view.getRootView(), goodHour.toString());
                         notifyDataSetChanged();
                         GlobalMethods.saveGoodHoursToFile(getContext(), hours);
                     }
@@ -202,5 +208,15 @@ public class AlarmsAdapter extends ArrayAdapter<GoodHour> {
                 mTimePicker.show();
             }
         });
+    }
+
+    private void showSnackbar(View view, String goodHourTime) {
+        if (view == null) return;
+        Snackbar.make(
+                view,
+                String.format("נקבעה שעה טובה ל-%s",
+                        goodHourTime),
+                2000
+        ).show();
     }
 }
